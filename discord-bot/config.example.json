@@ -1,0 +1,14 @@
+{
+  "guildId": "YOUR_GUILD_ID",
+  "channelId": "YOUR_CHANNEL_ID",
+  "allowedUserIds": [
+    "YOUR_USER_ID"
+  ],
+  "destination": "orch-lead@myteam",
+  "rigName": "myteam",
+  "pollSeconds": 15,
+  "maxActiveTasks": 20,
+  "relayConversation": true,
+  "decisionButtons": true,
+  "decisionRecipient": "human@kernel"
+}

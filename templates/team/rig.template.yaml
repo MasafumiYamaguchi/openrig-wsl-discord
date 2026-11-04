@@ -1,0 +1,88 @@
+version: "0.2"
+name: __RIG_NAME__
+culture_file: culture/CULTURE.md
+startup:
+  files:
+    - path: startup/context.md
+      delivery_hint: guidance_merge
+  actions: []
+pods:
+  - id: orch
+    label: 統括
+    members:
+      - id: lead
+        agent_ref: local:agents/lead
+        profile: default
+        runtime: claude-code
+        cwd: __PROJECT_DIR_JSON__
+        model: claude-opus-5-5
+        restore_policy: resume_if_possible
+    edges: []
+  - id: planning
+    label: 企画・要件
+    members:
+      - id: lead
+        agent_ref: local:agents/planning
+        profile: default
+        runtime: codex
+        cwd: __PROJECT_DIR_JSON__
+        model: gpt-6.1-sol
+        restore_policy: resume_if_possible
+    edges: []
+  - id: dev
+    label: 開発計画
+    members:
+      - id: lead
+        agent_ref: local:agents/development
+        profile: default
+        runtime: codex
+        cwd: __PROJECT_DIR_JSON__
+        model: gpt-6.1-sol
+        codex_permissions:
+          sandbox: workspace-write
+          approval: never
+          network_access: true
+          writable_roots:
+            - __PROJECT_DIR_JSON__
+          exclude_tmpdir_env_var: false
+          exclude_slash_tmp: false
+        restore_policy: resume_if_possible
+    edges: []
+  - id: quality
+    label: 品質・計画レビュー
+    members:
+      - id: lead
+        agent_ref: local:agents/quality
+        profile: default
+        runtime: codex
+        cwd: __PROJECT_DIR_JSON__
+        model: gpt-6.1-sol
+        codex_permissions:
+          sandbox: workspace-write
+          approval: never
+          network_access: true
+          writable_roots:
+            - __PROJECT_DIR_JSON__
+          exclude_tmpdir_env_var: false
+          exclude_slash_tmp: false
+        restore_policy: resume_if_possible
+    edges: []
+edges:
+  - kind: delegates_to
+    from: orch.lead
+    to: planning.lead
+  - kind: delegates_to
+    from: orch.lead
+    to: dev.lead
+  - kind: delegates_to
+    from: orch.lead
+    to: quality.lead
+  - kind: collaborates_with
+    from: planning.lead
+    to: dev.lead
+  - kind: can_observe
+    from: quality.lead
+    to: planning.lead
+  - kind: can_observe
+    from: quality.lead
+    to: dev.lead

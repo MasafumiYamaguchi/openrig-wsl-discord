@@ -1,0 +1,24 @@
+name: __RIG_NAME__-lead
+version: "1.0"
+description: Portable team role template.
+imports:
+  - ref: __SHARED_REF_JSON__
+profiles:
+  default:
+    uses:
+      skills: [orchestration-team, plan-review, exec-summary]
+      guidance: []
+      subagents: []
+      plugins: [shared:openrig-core]
+      runtime_resources: []
+resources:
+  guidance:
+    - id: role
+      path: guidance/role.md
+startup:
+  files:
+    - path: guidance/role.md
+      orientation: role
+      delivery_hint: send_text
+      required: true
+  actions: []

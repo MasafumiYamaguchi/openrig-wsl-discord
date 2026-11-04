@@ -1,0 +1,14 @@
+**/node_modules/
+**/__pycache__/
+**/*.pyc
+**/.env*
+!**/.env.example
+**/.data/
+**/*.log
+discord-bot/config.json
+discord-bot/config.local.json
+rigs/generated/
+.openrig/
+.claude/
+.codex/
+publish/
